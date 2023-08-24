@@ -18,6 +18,9 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -31,12 +34,32 @@ public class MenuFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_menu, container, false);
 
+
         BarChart barchart  = view.findViewById(R.id.barChart);
         initBarChart(barchart);
+        setData(barchart);
+
+        Bundle args = getArguments();
+        if (args != null && args.containsKey("jsonData")) {
+            String jsonString = args.getString("jsonData");
+            try {
+                JSONObject jsonData = new JSONObject(jsonString);
+
+                if (jsonData.has("integrationTime")) {
+                    int integrationTime = jsonData.getInt("integrationTime");
+                }
+
+                if (jsonData.has("cmd")) {
+                    String cmd = jsonData.getString("cmd");
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+
         return view;
-
-
     }
+
 
     // 바차트 설정을 초기화하는 함수
     private void initBarChart(BarChart barChart) {
@@ -85,7 +108,7 @@ public class MenuFragment extends Fragment {
         ArrayList<BarEntry> valueList = new ArrayList<>();
 
         // 임의 데이터를 생성하여 리스트에 추가합니다.
-        for (int i = 0; i <= 14; i++) {
+        for (int i = 1; i <= 15; i++) {
             // BarEntry 객체를 생성하여 X축과 Y축 값을 설정합니다.
             // i를 X축 값으로, i * 100을 Y축 값으로 설정합니다.
             valueList.add(new BarEntry(i, i * 100));
@@ -97,8 +120,11 @@ public class MenuFragment extends Fragment {
 
         // 바 색상 설정 (ColorTemplate.LIBERTY_COLORS)
         barDataSet.setColors(
-                Color.rgb(207, 248, 246), Color.rgb(148, 212, 212), Color.rgb(136, 180, 187),
-                Color.rgb(118, 174, 175), Color.rgb(42, 109, 130));
+                Color.rgb(242, 185, 158), Color.rgb(206, 177, 82), Color.rgb(128, 186, 76),
+                Color.rgb(0, 168, 166), Color.rgb(0, 159, 222), Color.rgb(0, 134, 205),
+                Color.rgb(165, 148, 198), Color.rgb(233, 155, 193), Color.rgb(230, 0, 54),
+                Color.rgb(255, 255, 0), Color.rgb(0, 137, 94), Color.rgb(0, 60, 149),
+                Color.rgb(244, 232, 219), Color.rgb(0, 96, 68), Color.rgb(245, 204, 165));
 
         // 바차트에 표시할 데이터를 담은 데이터셋을 바차트의 데이터 객체로 생성합니다.
         BarData data = new BarData(barDataSet);
@@ -106,19 +132,19 @@ public class MenuFragment extends Fragment {
         // 바차트에 데이터를 설정합니다.
         barChart.setData(data);
 
-        // 바차트를 다시 그리도록 호출합니다.
-        barChart.invalidate();
-
         // X축 레이블 설정
         List<String> labels = getXAxisLabels();
         XAxis xAxis = barChart.getXAxis();
         xAxis.setValueFormatter(new IndexAxisValueFormatter(labels));
+
+        // 바차트를 다시 그리도록 호출합니다.
+        barChart.invalidate();
     }
 
-    // X축 레이블을 "R1"부터 "R14"까지 설정하기 위한 메서드
+    // X축 레이블을 "R1"부터 "R15"까지 설정하기 위한 메서드
     private List<String> getXAxisLabels() {
         List<String> labels = new ArrayList<>();
-        for (int i = 1; i <= 14; i++) {
+        for (int i = 1; i <= 15; i++) {
             labels.add("R" + i);
         }
         return labels;

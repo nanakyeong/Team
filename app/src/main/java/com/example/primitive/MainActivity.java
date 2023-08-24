@@ -15,9 +15,6 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText editText_1, editText_2, editText_3, editText_4, editText_5;
-    Button btn_measure, bth_manual, btn_auto, btn_control;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
         editText_4.setFilters(new InputFilter[]{new InputFilterMinMax(0, 255)});
         editText_5.setFilters(new InputFilter[]{new InputFilterMinMax(0, 255)});
 
+        //측정버튼
         Button btn_measure = findViewById(R.id.bth_measure);
         btn_measure.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,10 +45,12 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //수동
         Button btn_manual = findViewById(R.id.bth_manual);
         btn_manual.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String integrationTimeStr = editText_1.getText().toString();
 
                 JSONObject jsonData = new JSONObject();
@@ -58,21 +58,19 @@ public class MainActivity extends AppCompatActivity {
                     jsonData.put("integrationTime", integrationTimeStr);
                     jsonData.put("cmd", "manual");
 
-                    Bundle bundle = new Bundle();
-                    bundle.putString("str1", editText_1.getText().toString());
-
                     MenuFragment menuFragment = new MenuFragment();
+                    Bundle bundle = new Bundle();
+                    bundle.putString("jsonData", jsonData.toString());
+                    bundle.putString("str1", integrationTimeStr);
                     menuFragment.setArguments(bundle);
 
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-                    transaction.replace(R.id.container, menuFragment).commit();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
 
+        //자동
         Button btn_auto = findViewById(R.id.btn_auto);
         btn_auto.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -80,27 +78,24 @@ public class MainActivity extends AppCompatActivity {
 
                 JSONObject jsonData = new JSONObject();
                 try {
-
-                    jsonData.put("integrationTime", 1000);
+                    jsonData.put("integrationTime", 100);
                     jsonData.put("cmd", "auto");
 
-
-                    editText_1.setText("1000");
-
                     Bundle bundle = new Bundle();
+                    bundle.putString("jsonData", jsonData.toString());
+                    editText_1.setText("100");
                     bundle.putString("str1", editText_1.getText().toString());
 
                     MenuFragment menuFragment = new MenuFragment();
                     menuFragment.setArguments(bundle);
 
-                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                    transaction.replace(R.id.container, menuFragment).commit();
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
             }
         });
 
+        //제어버튼
         Button btn_control = findViewById(R.id.btn_control);
         btn_control.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,42 +109,36 @@ public class MainActivity extends AppCompatActivity {
                 MenuFragment menuFragment = new MenuFragment();
                 menuFragment.setArguments(bundle);
 
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                transaction.replace(R.id.container, menuFragment).commit();
-
             }
         });
-
-
-
     }
 
-    // 숫자 제한 (intputFilterMinMax)
-    class InputFilterMinMax implements InputFilter {
-        private int min, max;
+        // 숫자 제한 (intputFilterMinMax)
+        class InputFilterMinMax implements InputFilter {
+            private int min, max;
 
-        public InputFilterMinMax(int min, int max) {
-            this.min = min;
-            this.max = max;
-        }
-
-        @Override
-        public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-            try {
-                String inputStr = dest.toString().substring(0, dstart) +
-                        source.toString() +
-                        dest.toString().substring(dend);
-                int input = Integer.parseInt(inputStr);
-                if (isInRange(min, max, input))
-                    return null;
-            } catch (NumberFormatException ignored) {
+            public InputFilterMinMax(int min, int max) {
+                this.min = min;
+                this.max = max;
             }
-            return "";
-        }
 
-        private boolean isInRange(int a, int b, int c) {
-            return b > a ? c >= a && c <= b : c >= b && c <= a;
-        }
-    }
+            @Override
+            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
+                try {
+                    String inputStr = dest.toString().substring(0, dstart) +
+                            source.toString() +
+                            dest.toString().substring(dend);
+                    int input = Integer.parseInt(inputStr);
+                    if (isInRange(min, max, input))
+                        return null;
+                } catch (NumberFormatException ignored) {
+                }
+                return "";
+            }
 
+            private boolean isInRange(int a, int b, int c) {
+                return b > a ? c >= a && c <= b : c >= b && c <= a;
+            }
+        }
 }
+
