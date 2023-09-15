@@ -10,7 +10,7 @@
         android:id="@+id/tableLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/table_outside"
+        android:background="@drawable/table_oustide"
         android:stretchColumns="*">
 
         <TableRow
@@ -96,7 +96,7 @@
     <com.github.mikephil.charting.charts.BarChart
         android:id="@+id/barChart"
         android:layout_width="match_parent"
-        android:layout_height="594dp" />
+        android:layout_height="499dp" />
 
 
 </LinearLayout>
