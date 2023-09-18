@@ -1,205 +1,221 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-
-    <FrameLayout
-        android:id="@+id/container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"/>
-
-    <ScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/container">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_gravity="bottom"
         android:orientation="vertical">
 
-
-        <!--        레이아웃 1-->
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
+            >
 
-            <LinearLayout
-                android:layout_width="47dp"
+            <FrameLayout
+                android:id="@+id/container"
+                android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
+                ></FrameLayout>
+        </ScrollView>
 
-                <TextView
-                    android:id="@+id/textView3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="CMD"
-                    android:textSize="20sp" />
 
-                <Button
-                    android:id="@+id/btn_auto"
-                    style="@style/Widget.AppCompat.Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="AUTO" />
-
-                <Button
-                    android:id="@+id/bth_manual"
-                    style="@style/Widget.AppCompat.Button"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="MANUAL" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="96dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Integration time\n"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/editText_1"
-                    android:layout_width="111dp"
-                    android:layout_height="53dp"
-                    android:layout_gravity="center"
-                    android:background="@drawable/text_borde"
-                    android:hint="입력하세요"
-                    android:inputType="number" />
-
-            </LinearLayout>
-
-            <Button
-                android:id="@+id/bth_measure"
-                style="@style/Widget.AppCompat.Button"
-                android:layout_width="0dp"
-                android:layout_height="135dp"
-                android:layout_weight="1"
-                android:text="측정\n버튼" />
-        </LinearLayout>
-
-<!--        레이아웃 2-->
-
-        <LinearLayout
+        <ScrollView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <!-- Ch1과 Ch2를 담을 LinearLayout -->
+            >
             <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/textView12"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Ch1"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/editText_2"
-                    android:layout_width="121dp"
-                    android:layout_height="52dp"
-                    android:layout_gravity="center"
-                    android:hint="입력"
-                    android:background="@drawable/text_borde"
-                    android:inputType="number" />
-
-                <TextView
-                    android:id="@+id/textView13"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Ch2"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/editText_3"
-                    android:layout_width="122dp"
-                    android:layout_height="49dp"
-                    android:layout_gravity="center"
-                    android:hint="입력"
-                    android:background="@drawable/text_borde"
-                    android:inputType="number" />
-            </LinearLayout>
-
-            <!-- Ch3과 Ch4를 담을 LinearLayout -->
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical"
-                android:text="제어버튼">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Ch3"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/editText_4"
-                    android:layout_width="121dp"
-                    android:layout_height="52dp"
-                    android:layout_gravity="center"
-                    android:hint="입력"
-                    android:background="@drawable/text_borde"
-                    android:inputType="number" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center"
-                    android:text="Ch4"
-                    android:textSize="20sp" />
-
-                <EditText
-                    android:id="@+id/editText_5"
-                    android:layout_width="122dp"
-                    android:layout_height="49dp"
-                    android:background="@drawable/text_borde"
-                    android:layout_gravity="center"
-                    android:hint="입력"
-                    android:inputType="number" />
-            </LinearLayout>
-        </LinearLayout>
-
-<!--        레이아웃 3-->
-        <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
-
-                <Button
-                    android:id="@+id/btn_control"
-                    style="@style/Widget.AppCompat.Button"
+                android:orientation="vertical"
+               >
+                <!--레이아웃 1-->
+                <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="제어버튼" />
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="47dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView3"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="CMD"
+                            android:textSize="20sp" />
+
+                        <Button
+                            android:id="@+id/btn_auto"
+                            style="@style/Widget.AppCompat.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="AUTO" />
+
+                        <Button
+                            android:id="@+id/bth_manual"
+                            style="@style/Widget.AppCompat.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="MANUAL" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="96dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Integration time\n"
+                            android:textSize="20sp" />
+
+                        <EditText
+                            android:id="@+id/editText_1"
+                            android:layout_width="111dp"
+                            android:layout_height="53dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/text_borde"
+                            android:hint="입력하세요"
+                            android:inputType="number" />
+
+                    </LinearLayout>
+
+                    <Button
+                        android:id="@+id/bth_measure"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="0dp"
+                        android:layout_height="135dp"
+                        android:layout_weight="1"
+                        android:text="측정\n버튼" />
+                </LinearLayout>
+
+                <!--레이아웃 2-->
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical">
+
+                        <TextView
+                            android:id="@+id/textView12"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Ch1"
+                            android:textSize="20sp" />
+
+                        <EditText
+                            android:id="@+id/editText_2"
+                            android:layout_width="121dp"
+                            android:layout_height="52dp"
+                            android:layout_gravity="center"
+                            android:hint="입력"
+                            android:background="@drawable/text_borde"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:id="@+id/textView13"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Ch2"
+                            android:textSize="20sp" />
+
+                        <EditText
+                            android:id="@+id/editText_3"
+                            android:layout_width="122dp"
+                            android:layout_height="49dp"
+                            android:layout_gravity="center"
+                            android:hint="입력"
+                            android:background="@drawable/text_borde"
+                            android:inputType="number" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:orientation="vertical"
+                        android:text="제어버튼">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Ch3"
+                            android:textSize="20sp" />
+
+                        <EditText
+                            android:id="@+id/editText_4"
+                            android:layout_width="121dp"
+                            android:layout_height="52dp"
+                            android:layout_gravity="center"
+                            android:hint="입력"
+                            android:background="@drawable/text_borde"
+                            android:inputType="number" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text="Ch4"
+                            android:textSize="20sp" />
+
+                        <EditText
+                            android:id="@+id/editText_5"
+                            android:layout_width="122dp"
+                            android:layout_height="49dp"
+                            android:background="@drawable/text_borde"
+                            android:layout_gravity="center"
+                            android:hint="입력"
+                            android:inputType="number" />
+                    </LinearLayout>
+                </LinearLayout>
+
+                <!--레이아웃 3-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <Button
+                        android:id="@+id/btn_control"
+                        style="@style/Widget.AppCompat.Button"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="제어버튼" />
+
+
+                </LinearLayout>
 
             </LinearLayout>
 
+        </ScrollView>
+
+
     </LinearLayout>
-    </ScrollView>
-</RelativeLayout>
+
+</LinearLayout>
