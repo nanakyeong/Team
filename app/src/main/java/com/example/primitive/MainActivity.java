@@ -2,19 +2,23 @@ package com.example.primitive;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.text.InputFilter;
-import android.text.Spanned;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
 
+    private RetrofitClient retrofitClient;
+    private ApiService apiService;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -23,14 +27,15 @@ public class MainActivity extends AppCompatActivity {
         EditText editText_1 = findViewById(R.id.editText_1);
         EditText editText_2 = findViewById(R.id.editText_2);
         EditText editText_3 = findViewById(R.id.editText_3);
-        EditText editText_4 = findViewById(R.id.editText_4);
-        EditText editText_5 = findViewById(R.id.editText_5);
 
-        editText_1.setFilters(new InputFilter[]{new InputFilterMinMax(0, 1000)});
-        editText_2.setFilters(new InputFilter[]{new InputFilterMinMax(0, 255)});
-        editText_3.setFilters(new InputFilter[]{new InputFilterMinMax(0, 255)});
-        editText_4.setFilters(new InputFilter[]{new InputFilterMinMax(0, 255)});
-        editText_5.setFilters(new InputFilter[]{new InputFilterMinMax(0, 255)});
+        // Integration 값 범위 체크
+        validateRange(editText_1, 0, 1000);
+
+        // Lux 값 범위 체크
+        validateRange(editText_2, 300, 1000);
+
+        // K 값 범위 체크
+        validateRange(editText_3, 3000, 5000);
 
         //측정버튼
         Button btn_measure = findViewById(R.id.bth_measure);
@@ -64,6 +69,11 @@ public class MainActivity extends AppCompatActivity {
                     bundle.putString("str1", integrationTimeStr);
                     menuFragment.setArguments(bundle);
 
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, menuFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -89,6 +99,11 @@ public class MainActivity extends AppCompatActivity {
                     MenuFragment menuFragment = new MenuFragment();
                     menuFragment.setArguments(bundle);
 
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.container, menuFragment);
+                    transaction.addToBackStack(null);
+                    transaction.commit();
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -96,49 +111,64 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //제어버튼
-        Button btn_control = findViewById(R.id.btn_control);
-        btn_control.setOnClickListener(new View.OnClickListener() {
+        Button btn_set = findViewById(R.id.btn_set);
+        btn_set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Bundle bundle = new Bundle();
-                bundle.putString("str2", editText_2.getText().toString());
-                bundle.putString("str3", editText_3.getText().toString());
-                bundle.putString("str4", editText_4.getText().toString());
-                bundle.putString("str5", editText_5.getText().toString());
+                // Retrofit을 사용한 네트워크 요청
+                String id = editText_1.getText().toString();
+                String time = editText_2.getText().toString();
+                String cmd = editText_3.getText().toString();
 
-                MenuFragment menuFragment = new MenuFragment();
-                menuFragment.setArguments(bundle);
+                retrofitClient = RetrofitClient.getInstance();
+                apiService = RetrofitClient.getRetrofitInterface();
 
+                int idInt = 0;  // 기본값 설정
+                int timeInt = 0;  // 기본값 설정
+
+                try {
+                    idInt = Integer.parseInt(id);
+                    timeInt = Integer.parseInt(time);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+
+                apiService.makeRequest(idInt, timeInt, cmd).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if (response.isSuccessful()) {
+                            // 성공했을 때 로직
+                            Toast.makeText(getApplicationContext(), "서버 연걸을 성공했습니다.", Toast.LENGTH_LONG).show();
+                        } else {
+                            Toast.makeText(getApplicationContext(), "서버 연걸은 성공했지만 응답이 잘못됐습니다.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        Toast.makeText(getApplicationContext(), "서버 연걸이 완전히 실패했습니다.", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
         });
     }
+        private void validateRange(EditText editText, int min, int max) {
+        try {
+            int value = Integer.parseInt(editText.getText().toString());
 
-        // 숫자 제한 (intputFilterMinMax)
-        class InputFilterMinMax implements InputFilter {
-            private int min, max;
-
-            public InputFilterMinMax(int min, int max) {
-                this.min = min;
-                this.max = max;
+            if (value < min) {
+                editText.setText(String.valueOf(min));
+            } else if (value > max) {
+                editText.setText(String.valueOf(max));
             }
 
-            @Override
-            public CharSequence filter(CharSequence source, int start, int end, Spanned dest, int dstart, int dend) {
-                try {
-                    String inputStr = dest.toString().substring(0, dstart) +
-                            source.toString() +
-                            dest.toString().substring(dend);
-                    int input = Integer.parseInt(inputStr);
-                    if (isInRange(min, max, input))
-                        return null;
-                } catch (NumberFormatException ignored) {
-                }
-                return "";
-            }
-
-            private boolean isInRange(int a, int b, int c) {
-                return b > a ? c >= a && c <= b : c >= b && c <= a;
-            }
+            editText.setSelection(editText.length());
+        } catch (NumberFormatException e) {
+            e.printStackTrace();
         }
+    }
+
+
+
 }
 

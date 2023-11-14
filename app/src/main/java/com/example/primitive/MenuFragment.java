@@ -21,6 +21,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -33,7 +34,6 @@ public class MenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_menu, container, false);
-
 
         BarChart barchart  = view.findViewById(R.id.barChart);
         initBarChart(barchart);
@@ -59,7 +59,6 @@ public class MenuFragment extends Fragment {
 
         return view;
     }
-
 
     // 바차트 설정을 초기화하는 함수
     private void initBarChart(BarChart barChart) {

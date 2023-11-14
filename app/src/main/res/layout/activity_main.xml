@@ -28,13 +28,13 @@
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            >
+            android:layout_height="wrap_content">
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical"
-               >
+                android:orientation="vertical">
+
                 <!--레이아웃 1-->
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -93,6 +93,7 @@
                             android:layout_gravity="center"
                             android:background="@drawable/text_borde"
                             android:hint="입력하세요"
+                            android:maxLength="4"
                             android:inputType="number" />
 
                     </LinearLayout>
@@ -107,6 +108,50 @@
                 </LinearLayout>
 
                 <!--레이아웃 2-->
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="65dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
+
+                        <LinearLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="57dp"
+                            android:orientation="horizontal"></LinearLayout>
+
+                        <TextView
+                            android:layout_width="90dp"
+                            android:layout_height="65dp"
+                            android:layout_gravity="center"
+                            android:text="조도\n(Lux)"
+                            android:textSize="20sp"
+                            android:gravity="center"></TextView>
+
+
+                        <EditText
+                            android:id="@+id/editText_2"
+                            android:layout_width="247dp"
+                            android:layout_height="59dp"
+                            android:layout_gravity="center"
+                            android:background="@drawable/text_borde"
+                            android:hint="입력하세요"
+                            android:maxLength="4"
+                            android:inputType="number" />
+
+                        <Button
+                            android:id="@+id/btn_set"
+                            style="@style/Widget.AppCompat.Button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="match_parent"
+                            android:text="SET"></Button>
+
+                    </LinearLayout>
+
+                    </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -114,108 +159,44 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:layout_width="0dp"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical">
+                        android:orientation="horizontal">
 
                         <TextView
-                            android:id="@+id/textView12"
-                            android:layout_width="wrap_content"
+                            android:layout_width="91dp"
                             android:layout_height="wrap_content"
                             android:layout_gravity="center"
-                            android:text="Ch1"
-                            android:textSize="20sp" />
-
-                        <EditText
-                            android:id="@+id/editText_2"
-                            android:layout_width="121dp"
-                            android:layout_height="52dp"
-                            android:layout_gravity="center"
-                            android:hint="입력"
-                            android:background="@drawable/text_borde"
-                            android:inputType="number" />
-
-                        <TextView
-                            android:id="@+id/textView13"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Ch2"
-                            android:textSize="20sp" />
+                            android:gravity="center"
+                            android:text="색온도\n(K)"
+                            android:textSize="20sp"></TextView>
 
                         <EditText
                             android:id="@+id/editText_3"
-                            android:layout_width="122dp"
-                            android:layout_height="49dp"
+                            android:layout_width="247dp"
+                            android:layout_height="51dp"
                             android:layout_gravity="center"
-                            android:hint="입력"
                             android:background="@drawable/text_borde"
-                            android:inputType="number" />
+                            android:hint="입력하세요"
+                            android:maxLength="4"
+                            android:inputType="number">
+                        </EditText>
+
+
                     </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1"
-                        android:orientation="vertical"
-                        android:text="제어버튼">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Ch3"
-                            android:textSize="20sp" />
-
-                        <EditText
-                            android:id="@+id/editText_4"
-                            android:layout_width="121dp"
-                            android:layout_height="52dp"
-                            android:layout_gravity="center"
-                            android:hint="입력"
-                            android:background="@drawable/text_borde"
-                            android:inputType="number" />
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:text="Ch4"
-                            android:textSize="20sp" />
-
-                        <EditText
-                            android:id="@+id/editText_5"
-                            android:layout_width="122dp"
-                            android:layout_height="49dp"
-                            android:background="@drawable/text_borde"
-                            android:layout_gravity="center"
-                            android:hint="입력"
-                            android:inputType="number" />
-                    </LinearLayout>
-                </LinearLayout>
-
-                <!--레이아웃 3-->
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:id="@+id/btn_control"
-                        style="@style/Widget.AppCompat.Button"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:text="제어버튼" />
 
 
                 </LinearLayout>
 
             </LinearLayout>
 
+
+
+
         </ScrollView>
 
 
     </LinearLayout>
+
 
 </LinearLayout>
