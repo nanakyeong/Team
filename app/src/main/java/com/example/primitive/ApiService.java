@@ -1,14 +1,20 @@
 package com.example.primitive;
 
 import retrofit2.Call;
-import retrofit2.http.GET;
-import retrofit2.http.Query;
+import retrofit2.http.Body;
+import retrofit2.http.POST;
 
 public interface ApiService {
-    @GET("/light")
-    Call<String> makeRequest(
-            @Query("id") int id,
-            @Query("time") int time,
-            @Query("cmd") String cmd
-    );
+    @POST("/light/sse")
+    Call<String> makeRequest
+            (@Body SetRequest setRequest);
+    @POST("/light/sse")
+    Call<String> makeControlRequest(@Body ControlRequest controlRequest);
 }
+
+
+
+
+
+
+

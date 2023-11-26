@@ -3,7 +3,7 @@ package com.example.primitive;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private static String BASE_URL = "http://10.2.10.200:8080/";
+    private static String BASE_URL = "http://169.254.228.244:8080";
     private static ApiService retrofitAPI;
     private static RetrofitClient instance = null;
 
@@ -15,7 +15,6 @@ public class RetrofitClient {
                 .build();
         retrofitAPI =retrofit.create(ApiService.class);
     }
-
 
     public static RetrofitClient getInstance(){
         if(instance==null){

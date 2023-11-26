@@ -2,6 +2,7 @@ package com.example.primitive;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
+
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -19,6 +20,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RetrofitClient retrofitClient;
     private ApiService apiService;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,19 +38,6 @@ public class MainActivity extends AppCompatActivity {
 
         // K 값 범위 체크
         validateRange(editText_3, 3000, 5000);
-
-        //측정버튼
-        Button btn_measure = findViewById(R.id.bth_measure);
-        btn_measure.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-                MenuFragment menuFragment = new MenuFragment();
-                transaction.replace(R.id.container, menuFragment);
-                transaction.addToBackStack(null);
-                transaction.commit();
-            }
-        });
 
         //수동
         Button btn_manual = findViewById(R.id.bth_manual);
@@ -110,21 +99,67 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //제어버튼
+        //set버튼
         Button btn_set = findViewById(R.id.btn_set);
         btn_set.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // Retrofit을 사용한 네트워크 요청
+                String id = editText_1.getText().toString();
+
+                int idInt = 0;
+
+                try {
+                    idInt = Integer.parseInt(id);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+
+                // 여기에서 Retrofit 클라이언트 및 API 서비스 인스턴스 가져오기
+                RetrofitClient retrofitClient = RetrofitClient.getInstance();
+                ApiService apiService = retrofitClient.getRetrofitInterface();
+
+                int[] set = {0, 1, 2, 3};
+
+                SetRequest setRequest = new SetRequest(idInt, set);
+
+                // 여기에서 Retrofit을 통한 서버 요청
+                apiService.makeRequest(setRequest).enqueue(new Callback<String>() {
+                    @Override
+                    public void onResponse(Call<String> call, Response<String> response) {
+                        if (response.isSuccessful()) {
+                            // 성공 응답 처리 로직
+                            Toast.makeText(getApplicationContext(), "서버 연결에 성공했습니다.", Toast.LENGTH_LONG).show();
+                        } else {
+                            // 응답이 성공하지 않았을 때의 처리 로직
+                            Toast.makeText(getApplicationContext(), "서버 연결은 성공했지만 응답이 잘못되었습니다.", Toast.LENGTH_LONG).show();
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<String> call, Throwable t) {
+                        // 서버 요청 실패 처리 로직
+                        Toast.makeText(getApplicationContext(), "서버 연결이 실패했습니다.", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+        });
+
+        //측정버튼
+        Button btn_measure = findViewById(R.id.bth_measure);
+        btn_measure.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Retrofit 클라이언트 및 API 서비스 인스턴스 가져오기
+                RetrofitClient retrofitClient = RetrofitClient.getInstance();
+                ApiService apiService = retrofitClient.getRetrofitInterface();
+
+                // 값 변환 및 예외 처리
                 String id = editText_1.getText().toString();
                 String time = editText_2.getText().toString();
                 String cmd = editText_3.getText().toString();
 
-                retrofitClient = RetrofitClient.getInstance();
-                apiService = RetrofitClient.getRetrofitInterface();
-
-                int idInt = 0;  // 기본값 설정
-                int timeInt = 0;  // 기본값 설정
+                int idInt = 0;
+                int timeInt = 0;
 
                 try {
                     idInt = Integer.parseInt(id);
@@ -133,42 +168,53 @@ public class MainActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
 
-                apiService.makeRequest(idInt, timeInt, cmd).enqueue(new Callback<String>() {
+                // ControlRequestDTO를 사용하여 요청 본문에 필요한 데이터를 담음
+                ControlRequest controlRequest = new ControlRequest(idInt, cmd, timeInt);
+
+                // 여기에서 Retrofit을 통한 서버 요청
+                apiService.makeControlRequest(controlRequest).enqueue(new Callback<String>() {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
                         if (response.isSuccessful()) {
-                            // 성공했을 때 로직
-                            Toast.makeText(getApplicationContext(), "서버 연걸을 성공했습니다.", Toast.LENGTH_LONG).show();
+                            // 성공 응답 처리 로직
+                            Toast.makeText(getApplicationContext(), "제어 요청 성공", Toast.LENGTH_LONG).show();
                         } else {
-                            Toast.makeText(getApplicationContext(), "서버 연걸은 성공했지만 응답이 잘못됐습니다.", Toast.LENGTH_LONG).show();
+                            Toast.makeText(getApplicationContext(), "제어 요청 실패", Toast.LENGTH_LONG).show();
                         }
                     }
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "서버 연걸이 완전히 실패했습니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "서버 연결이 실패했습니다.", Toast.LENGTH_LONG).show();
                     }
                 });
             }
         });
+
     }
-        private void validateRange(EditText editText, int min, int max) {
-        try {
-            int value = Integer.parseInt(editText.getText().toString());
 
-            if (value < min) {
-                editText.setText(String.valueOf(min));
-            } else if (value > max) {
-                editText.setText(String.valueOf(max));
+
+
+        private void validateRange (EditText editText,int min, int max){
+            try {
+                int value = Integer.parseInt(editText.getText().toString());
+
+                if (value < min) {
+                    editText.setText(String.valueOf(min));
+                } else if (value > max) {
+                    editText.setText(String.valueOf(max));
+                }
+
+                editText.setSelection(editText.length());
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
             }
-
-            editText.setSelection(editText.length());
-        } catch (NumberFormatException e) {
-            e.printStackTrace();
         }
     }
 
 
 
-}
+
+
+
 
