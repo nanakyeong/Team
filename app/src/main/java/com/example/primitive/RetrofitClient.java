@@ -3,7 +3,7 @@ package com.example.primitive;
 import retrofit2.converter.gson.GsonConverterFactory;
 
 public class RetrofitClient {
-    private static String BASE_URL = "http://169.254.228.244:8080";
+    private static String BASE_URL = "http://192.168.233.76:8080";
     private static ApiService retrofitAPI;
     private static RetrofitClient instance = null;
 

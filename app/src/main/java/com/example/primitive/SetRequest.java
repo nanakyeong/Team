@@ -6,12 +6,17 @@ public class SetRequest {
     @SerializedName("id")
     private int id;
 
-    @SerializedName("set")
-    private int[] set;
+    @SerializedName("illum")
+    private int illum;
 
-    public SetRequest(int id, int[] set) {
+    @SerializedName("temp")
+    private int temp;
+
+    public SetRequest(int id, int illum, int temp) {
         this.id = id;
-        this.set = set;
+        this.illum = illum;
+        this.temp = temp;
+
     }
 }
 

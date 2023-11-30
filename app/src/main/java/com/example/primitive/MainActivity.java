@@ -118,9 +118,23 @@ public class MainActivity extends AppCompatActivity {
                 RetrofitClient retrofitClient = RetrofitClient.getInstance();
                 ApiService apiService = retrofitClient.getRetrofitInterface();
 
-                int[] set = {0, 1, 2, 3};
+                // editText_2가 illum을, editText_3이 temp를 나타낸다고 가정합니다.
+                String illumStr = editText_2.getText().toString();
+                String tempStr = editText_3.getText().toString();
 
-                SetRequest setRequest = new SetRequest(idInt, set);
+                int illum = 0;
+                int temp = 0;
+
+                try {
+                    illum = Integer.parseInt(illumStr);
+                    temp = Integer.parseInt(tempStr);
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                    Toast.makeText(getApplicationContext(), "유효하지 않은 illum 또는 temp 값입니다. 유효한 정수를 입력해주세요.", Toast.LENGTH_LONG).show();
+                    return; // illum 또는 temp이 유효하지 않으면 실행을 중지합니다.
+                }
+
+                SetRequest setRequest = new SetRequest(idInt, illum, temp);
 
                 // 여기에서 Retrofit을 통한 서버 요청
                 apiService.makeRequest(setRequest).enqueue(new Callback<String>() {
@@ -192,8 +206,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
 
         private void validateRange (EditText editText,int min, int max){
             try {

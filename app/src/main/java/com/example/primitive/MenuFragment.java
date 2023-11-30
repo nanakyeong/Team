@@ -8,6 +8,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import com.github.mikephil.charting.charts.BarChart;
 import com.github.mikephil.charting.components.Description;
 import com.github.mikephil.charting.components.Legend;
@@ -33,11 +35,18 @@ public class MenuFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_menu, container, false);
+        View view = inflater.inflate(R.layout.fragment_menu, container, false);
 
-        BarChart barchart  = view.findViewById(R.id.barChart);
+        BarChart barchart = view.findViewById(R.id.barChart);
         initBarChart(barchart);
         setData(barchart);
+
+        TextView averageTextView1 = view.findViewById(R.id.average_1);
+        TextView averageTextView2 = view.findViewById(R.id.average_2);
+        //TextView illumTextView = view.findViewById(R.id.illum);
+        //TextView illumUnitTextView = view.findViewById(R.id.illum_unit);
+        //TextView tempTextView = view.findViewById(R.id.temp);
+        //TextView tempUnitTextView = view.findViewById(R.id.temp_unit);
 
         Bundle args = getArguments();
         if (args != null && args.containsKey("jsonData")) {
@@ -47,6 +56,31 @@ public class MenuFragment extends Fragment {
 
                 if (jsonData.has("integrationTime")) {
                     int integrationTime = jsonData.getInt("integrationTime");
+
+                    // R1~R8의 값을 가져와서 리스트에 저장
+                    List<Integer> rValues1 = new ArrayList<>();
+                    for (int i = 1; i <= 8; i++) {
+                        if (jsonData.has("R" + i)) {
+                            int rValue = jsonData.getInt("R" + i);
+                            rValues1.add(rValue);
+                        }
+                    }
+                    // R9~R14의 값을 가져와서 리스트에 저장
+                    List<Integer> rValues2 = new ArrayList<>();
+                    for (int i = 9; i <= 14; i++) {
+                        if (jsonData.has("R" + i)) {
+                            int rValue = jsonData.getInt("R" + i);
+                            rValues2.add(rValue);
+                        }
+                    }
+
+                    // 리스트의 평균을 계산
+                    double average1 = calculateAverage(rValues1);
+                    double average2 = calculateAverage(rValues2);
+
+                    // TextView에 평균값 설정
+                    averageTextView1.setText(String.valueOf(average1));
+                    averageTextView2.setText(String.valueOf(average2));
                 }
 
                 if (jsonData.has("cmd")) {
@@ -58,6 +92,20 @@ public class MenuFragment extends Fragment {
         }
 
         return view;
+    }
+
+    // 리스트의 평균을 계산하는 메서드
+    private double calculateAverage(List<Integer> rValues) {
+        if (rValues.isEmpty()) {
+            return 0;
+        }
+
+        double sum = 0;
+        for (int value : rValues) {
+            sum += value;
+        }
+
+        return sum / rValues.size();
     }
 
     // 바차트 설정을 초기화하는 함수
@@ -143,7 +191,7 @@ public class MenuFragment extends Fragment {
     // X축 레이블을 "R1"부터 "R15"까지 설정하기 위한 메서드
     private List<String> getXAxisLabels() {
         List<String> labels = new ArrayList<>();
-        for (int i = 1; i <= 15; i++) {
+        for (int i = 1; i <= 14; i++) {
             labels.add("R" + i);
         }
         return labels;

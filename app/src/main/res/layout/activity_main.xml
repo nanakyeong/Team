@@ -129,7 +129,6 @@
                             android:text="조도\n(Lux)"
                             android:textSize="20sp"></TextView>
 
-
                         <EditText
                             android:id="@+id/editText_2"
                             android:layout_width="291dp"
