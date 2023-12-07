@@ -27,7 +27,7 @@
                         android:background="@drawable/table_inside"
                         android:gravity="center"
                         android:text="조도"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"/>
 
                     <TextView
                         android:id="@+id/illum"
@@ -65,7 +65,7 @@
                         android:background="@drawable/table_inside"
                         android:gravity="center"
                         android:text="색온도"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"/>
 
                     <TextView
                         android:id="@+id/temp"

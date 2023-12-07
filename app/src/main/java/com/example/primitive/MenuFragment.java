@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,10 +44,6 @@ public class MenuFragment extends Fragment {
 
         TextView averageTextView1 = view.findViewById(R.id.average_1);
         TextView averageTextView2 = view.findViewById(R.id.average_2);
-        //TextView illumTextView = view.findViewById(R.id.illum);
-        //TextView illumUnitTextView = view.findViewById(R.id.illum_unit);
-        //TextView tempTextView = view.findViewById(R.id.temp);
-        //TextView tempUnitTextView = view.findViewById(R.id.temp_unit);
 
         Bundle args = getArguments();
         if (args != null && args.containsKey("jsonData")) {
@@ -54,8 +51,12 @@ public class MenuFragment extends Fragment {
             try {
                 JSONObject jsonData = new JSONObject(jsonString);
 
-                if (jsonData.has("integrationTime")) {
-                    int integrationTime = jsonData.getInt("integrationTime");
+                if (jsonData.has("cmd")) {
+                    String cmd = jsonData.getString("cmd");
+                }
+
+                if (jsonData.has("time")) {
+                    int integrationTime = jsonData.getInt("time");
 
                     // R1~R8의 값을 가져와서 리스트에 저장
                     List<Integer> rValues1 = new ArrayList<>();
@@ -82,10 +83,6 @@ public class MenuFragment extends Fragment {
                     averageTextView1.setText(String.valueOf(average1));
                     averageTextView2.setText(String.valueOf(average2));
                 }
-
-                if (jsonData.has("cmd")) {
-                    String cmd = jsonData.getString("cmd");
-                }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -93,6 +90,7 @@ public class MenuFragment extends Fragment {
 
         return view;
     }
+
 
     // 리스트의 평균을 계산하는 메서드
     private double calculateAverage(List<Integer> rValues) {
