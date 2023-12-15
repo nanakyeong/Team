@@ -46,7 +46,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/average_1"
+                        android:id="@+id/cri_1"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/table_inside"
@@ -84,7 +84,7 @@
                         android:textSize="20sp" />
 
                     <TextView
-                        android:id="@+id/average_2"
+                        android:id="@+id/cri_2"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@drawable/table_inside"

@@ -1,10 +1,13 @@
 package com.example.primitive;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -108,11 +111,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
-                // 여기에서 Retrofit 클라이언트 및 API 서비스 인스턴스 가져오기
+                FragmentManager manager = getSupportFragmentManager();
+                FragmentTransaction transaction = manager.beginTransaction();
+
+                Bundle bundle = new Bundle();
+
+                String message1 = editText_2.getText().toString() + "lux";
+                String message2 = editText_3.getText().toString() + "k";
+                bundle.putString("illum", message1);
+                bundle.putString("cct", message2);
+
+                MenuFragment menuFragment = new MenuFragment();
+
+                menuFragment.setArguments(bundle);
+                transaction.replace(R.id.container, menuFragment).commit();
+
                 RetrofitClient retrofitClient = RetrofitClient.getInstance();
                 ApiService apiService = retrofitClient.getRetrofitInterface();
 
-                // editText_2가 illum을, editText_3이 temp를 나타낸다고 가정합니다.
                 String illumStr = editText_2.getText().toString();
                 String cctStr = editText_3.getText().toString();
 
@@ -142,15 +158,16 @@ public class MainActivity extends AppCompatActivity {
                             Toast.makeText(getApplicationContext(), "서버 연결은 성공했지만 응답이 잘못되었습니다.", Toast.LENGTH_LONG).show();
                         }
                     }
+
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
                         // 서버 요청 실패 처리 로직
-                        Toast.makeText(getApplicationContext(), "서버 연결이 실패했습니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "set 버튼 서버 연결이 실패했습니다.", Toast.LENGTH_LONG).show();
                     }
                 });
-
             }
         });
+
 
         //측정버튼
         Button btn_measure = findViewById(R.id.bth_measure);
@@ -191,7 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<String> call, Throwable t) {
-                        Toast.makeText(getApplicationContext(), "서버 연결이 실패했습니다.", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "측정 버튼 서버 연결이 실패했습니다.", Toast.LENGTH_LONG).show();
                     }
                 });
 

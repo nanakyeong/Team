@@ -5,6 +5,7 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.telecom.Call;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +21,10 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParseException;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -27,6 +32,9 @@ import org.json.JSONObject;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
+
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MenuFragment extends Fragment {
 
@@ -37,6 +45,17 @@ public class MenuFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_menu, container, false);
+
+        TextView illum = view.findViewById(R.id.illum);
+        TextView cct = view.findViewById(R.id.temp);
+
+        if (getArguments() != null) {
+            String illumMessage = getArguments().getString("illum");
+            String cctMessage = getArguments().getString("cct");
+            illum.setText(illumMessage);
+            cct.setText(cctMessage);
+
+        }
 
         BarChart barchart = view.findViewById(R.id.barChart);
         initBarChart(barchart);
@@ -56,21 +75,21 @@ public class MenuFragment extends Fragment {
                 }
 
                 if (jsonData.has("time")) {
-                    int integrationTime = jsonData.getInt("time");
+                    int time = jsonData.getInt("time");
 
                     // R1~R8의 값을 가져와서 리스트에 저장
                     List<Integer> rValues1 = new ArrayList<>();
                     for (int i = 1; i <= 8; i++) {
-                        if (jsonData.has("R" + i)) {
-                            int rValue = jsonData.getInt("R" + i);
+                        if (jsonData.has("cri" + i)) {
+                            int rValue = jsonData.getInt("cri" + i);
                             rValues1.add(rValue);
                         }
                     }
                     // R9~R14의 값을 가져와서 리스트에 저장
                     List<Integer> rValues2 = new ArrayList<>();
                     for (int i = 9; i <= 14; i++) {
-                        if (jsonData.has("R" + i)) {
-                            int rValue = jsonData.getInt("R" + i);
+                        if (jsonData.has("cri" + i)) {
+                            int rValue = jsonData.getInt("cri" + i);
                             rValues2.add(rValue);
                         }
                     }
@@ -82,6 +101,23 @@ public class MenuFragment extends Fragment {
                     // TextView에 평균값 설정
                     averageTextView1.setText(String.valueOf(average1));
                     averageTextView2.setText(String.valueOf(average2));
+
+                    TextView cri1TextView = view.findViewById(R.id.cri_1);
+                    TextView cri2TextView = view.findViewById(R.id.cri_2);
+
+                    StringBuilder cri1Text = new StringBuilder();
+                    for (int rValue : rValues1) {
+                        cri1Text.append(rValue).append(", ");
+                    }
+                    if (cri1Text.length() > 0) cri1Text.setLength(cri1Text.length() - 2); // 마지막 콤마 제거
+                    cri1TextView.setText(cri1Text.toString());
+
+                    StringBuilder cri2Text = new StringBuilder();
+                    for (int rValue : rValues2) {
+                        cri2Text.append(rValue).append(", ");
+                    }
+                    if (cri2Text.length() > 0) cri2Text.setLength(cri2Text.length() - 2); // 마지막 콤마 제거
+                    cri2TextView.setText(cri2Text.toString());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -89,6 +125,7 @@ public class MenuFragment extends Fragment {
         }
 
         return view;
+
     }
 
 
@@ -194,5 +231,6 @@ public class MenuFragment extends Fragment {
         }
         return labels;
     }
+
 
 }
